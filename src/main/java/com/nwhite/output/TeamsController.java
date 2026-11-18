@@ -1,8 +1,11 @@
 package com.nwhite.output;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class TeamsController {
@@ -13,11 +16,10 @@ public class TeamsController {
     }
 
     @GetMapping("/teams")
-    public String teams() {
-        String response = chatClient.prompt()
+    public List<NbaTeam> teams() {
+        return chatClient.prompt()
                 .user("Please, name all of the teams in the NBA")
                 .call()
-                .content();
-        return response;
+                .entity(new ParameterizedTypeReference<List<NbaTeam>>() {});
     }
 }
